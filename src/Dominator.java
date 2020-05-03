@@ -1,32 +1,32 @@
 import java.util.Stack;
 
-public class EquiLeader {
+public class Dominator {
 
     public static void main(String[] argv){
 
-        int A[] = {4, 3 ,4, 4, 4, 2};
+        int A[] = {3, 4 , 3, 2, 3, -1, 3, 3};
 
-        Dominator leader = new Dominator();
+        Dominator dominator = new Dominator();
 
-        int result = leader.solution(A);
+        int result = dominator.solution(A);
 
         System.out.println(result);
 
         A = new int[]{4, 3};
 
-        leader = new Dominator();
+        dominator = new Dominator();
 
-        result = leader.solution(A);
+        result = dominator.solution(A);
 
         System.out.println(result);
 
     }
 
     public int solution(int[] A) {
-        return equiLeader(A);
+        return dominator(A);
     }
 
-    private int equiLeader(int[] A) {
+    private int dominator(int[] A) {
         int result = 0;
 
         Stack<Integer> leaderStorage = new Stack();
@@ -50,25 +50,19 @@ public class EquiLeader {
             }
         }
 
-        int countMax = count;
+        boolean isDominator = isDominator(count, A.length);
 
-        boolean isLeader = isLeader(count, A.length - 1);
-
-        if(isLeader) {
+        if(isDominator) {
             for (int i = 0; i < A.length; i++) {
                 if (A[i] == candidate) {
-                    count--;
+                    return i;
                 }
-                if (isLeader(count, A.length - 1 - i) && isLeader(countMax - count, i + 1)) {
-                    result++;
-                }
-
             }
         }
-        return result;
+        return -1;
     }
 
-    private boolean isLeader(int count, int size) {
+    private boolean isDominator(int count, int size) {
         return count > Math.floor(size / 2d);
     }
 
