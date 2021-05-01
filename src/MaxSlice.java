@@ -1,13 +1,12 @@
-import java.util.Stack;
-
-import static java.lang.Math.max;
-import static java.lang.Math.min;
+import java.util.Arrays;
 
 public class MaxSlice {
 
     public static void main(String[] argv){
 
-        int A[] = {3, 2, 6, -1, 4, 5, -1, 2};
+        int A[] = {3, 2, 6, -11, 4, 5, -1, 2};
+        //int A[] = {5, -7, 3, 5, -2, 4, -1};
+        //int A[] = {1, 2, 3, 4, 5};
 
         MaxSlice maxSlice = new MaxSlice();
 
@@ -15,26 +14,29 @@ public class MaxSlice {
 
         System.out.println(result);
 
-        /*A = new int[]{4, -3};
-
-        maxSlice = new MaxSlice();
-
-        result = maxSlice.solution(A);
-
-        System.out.println(result);*/
 
     }
 
     public int solution(int[] A) {
-        return maxSlice(A);
+        int maxDoubleSlice = 0;
+        for (int i = 1; i < A.length - 1; i++) {
+            maxDoubleSlice = Math.max(maxDoubleSlice, doubleSlice(A, i));
+        }
+        return maxDoubleSlice;
     }
 
-    private int maxSlice(int[] A) {
-        int max_ending = 0, max_slice = 0, min = 0;
-        for (int a : A) {
-            max_ending = max(0, max_ending + a);
-            min = min(min, a);
-            max_slice = max(max_slice, max_ending);
+    public int doubleSlice(int[] array, int index){
+        if (array.length < 4) return 0;
+        int[] left = Arrays.copyOfRange(array, 1, index);
+        int[] right = Arrays.copyOfRange(array, index + 1, array.length - 1);
+        return sliceSum(left) + sliceSum(right);
+    }
+
+    public int sliceSum(int A[]){
+        int max_ending = 0, max_slice = 0;
+        for(int i = 0; i < A.length; i++) {
+            max_ending = Math.max(0, max_ending + A[i]);
+            max_slice = Math.max(max_slice, max_ending);
         }
         return max_slice;
     }
